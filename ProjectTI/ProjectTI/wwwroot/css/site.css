@@ -62,3 +62,12 @@ a, .btn-link {
 .blazor-error-boundary::after {
     content: "An error has occurred."
 }
+
+.date-time {
+    color: white;
+    cursor: default;
+}
+
+.date-time:hover {
+    color: white;
+}
