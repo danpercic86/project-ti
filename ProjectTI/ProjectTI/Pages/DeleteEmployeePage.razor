@@ -1,0 +1,107 @@
+@page "/delete-employee"
+@using Microsoft.EntityFrameworkCore
+@using ProjectTI.Data
+
+<PageTitle>Ștergere angajati</PageTitle>
+
+<h1>Ștergere angajati</h1>
+
+<EditForm class="d-flex flex-column w-25" Model="_model" OnValidSubmit="@Search">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+
+    <label>Nume:</label>
+    <InputText class="py-1 my-2" @bind-Value="_model.Name"></InputText>
+
+    <button disabled="@_model.Name.Length.Equals(0)" class="btn btn-primary my-2 mb-5" type="submit">Cautare</button>
+</EditForm>
+
+@if (_loading)
+{
+    <p>Căutare ...</p>
+}
+
+@if (!_loading && Employees is not null)
+{
+    if (Employees.Count == 0)
+    {
+        <p>Nu a fost găsit niciun angajat</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nume</th>
+                <th>Prenume</th>
+                <th>Funcție</th>
+                <th>Salar baza</th>
+                <th>Spor</th>
+                <th>Premii brute</th>
+                <th>Rețineri</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var employee in Employees)
+            {
+                <tr>
+                    <td>
+                        @employee.LastName
+                    </td>
+                    <td>
+                        @employee.FirstName
+                    </td>
+                    <td>
+                        @employee.Position
+                    </td>
+                    <td>
+                        @employee.Salary
+                    </td>
+                    <td>
+                        @employee.Boost
+                    </td>
+                    <td>
+                        @employee.Bonuses
+                    </td>
+                    <td>
+                        @employee.Retentions
+                    </td>
+                    <td>
+                        <button @onclick="() => Delete(employee)" class="btn btn-primary">Șterge</button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+}
+
+@inject ApplicationDbContext _appDbContext
+@inject IJSRuntime _jsRuntime
+
+@code {
+    private List<Employee>? Employees { get; set; }
+    private Model _model { get; } = new();
+    private bool _loading;
+
+    private async Task Search()
+    {
+        _loading = true;
+        Employees = await _appDbContext.Employees.Where(e => (e.FirstName + " " + e.LastName).ToLower().Contains(_model.Name.ToLower())).ToListAsync();
+        _loading = false;
+    }
+
+    private async Task Delete(Employee employee)
+    {
+        _appDbContext.Employees.Remove(employee);
+        await _appDbContext.SaveChangesAsync();
+        await _jsRuntime.InvokeVoidAsync("alert", "Angajatul a fost șters");
+        await Search();
+    }
+
+    class Model
+    {
+        public string Name { get; set; } = "";
+    }
+
+}
