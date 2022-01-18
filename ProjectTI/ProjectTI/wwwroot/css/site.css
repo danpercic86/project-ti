@@ -63,11 +63,11 @@ a, .btn-link {
     content: "An error has occurred."
 }
 
-.date-time {
+.nav-link-header {
     color: white;
     cursor: default;
 }
 
-.date-time:hover {
+.nav-link-header:hover {
     color: white;
 }

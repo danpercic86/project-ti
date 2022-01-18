@@ -9,4 +9,7 @@ public class ApplicationDbContext : IdentityDbContext
         : base(options)
     {
     }
+
+    public DbSet<Variables> Variables { get; set; }
+    public DbSet<Employee> Employees { get; set; }
 }

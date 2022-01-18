@@ -1,0 +1,56 @@
+@page "/variables"
+@using ProjectTI.Data
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Modificare procente</PageTitle>
+
+<h1>Modificare procente</h1>
+
+<EditForm class="d-flex flex-column w-25" Model="Variables" OnValidSubmit="@Save">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+
+    <label>CAS:</label>
+    <InputNumber class="py-1 my-2" @bind-Value="Variables.Cas"></InputNumber>
+
+    <label>CASS: </label>
+    <InputNumber class="py-1 my-2" @bind-Value="Variables.Cass"></InputNumber>
+
+    <label>Impozit: </label>
+    <InputNumber class="py-1 my-2" @bind-Value="Variables.Tax"></InputNumber>
+
+    <button class="btn btn-primary mt-2" type="submit">Salvare</button>
+</EditForm>
+
+@inject ApplicationDbContext _appDbContext
+@inject IJSRuntime _jsRuntime
+
+@code {
+    private Variables Variables { get; set; } = new();
+
+    private async Task Save()
+    {
+        if (string.IsNullOrEmpty(Variables.Id))
+        {
+            Variables.Id = Guid.NewGuid().ToString();
+            await _appDbContext.Variables.AddAsync(Variables);
+        }
+        else
+        {
+            _appDbContext.Variables.Update(Variables);
+        }
+
+        await _appDbContext.SaveChangesAsync();
+        await _jsRuntime.InvokeVoidAsync("alert", "Informațiile au fost salvate!");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var existing = (await _appDbContext.Variables.ToListAsync()).FirstOrDefault();
+        if (existing is not null)
+        {
+            Variables = existing;
+        }
+    }
+
+}

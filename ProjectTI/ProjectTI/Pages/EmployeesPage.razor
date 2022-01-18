@@ -1,0 +1,44 @@
+@page "/employees"
+@using ProjectTI.Data
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Modificare procente</PageTitle>
+
+<h1>Modificare procente</h1>
+
+@if (Employees.Count != 0)
+{
+    <EditForm Model="Employees" OnValidSubmit="@Save">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        @foreach (var employee in Employees)
+        {
+            <InputText @bind-Value="employee.FirstName"></InputText>
+            <InputText @bind-Value="employee.LastName"></InputText>
+            <InputText @bind-Value="employee.Position"></InputText>
+            <InputNumber @bind-Value="employee.Salary"></InputNumber>
+            <InputNumber @bind-Value="employee.Boost"></InputNumber>
+            <InputNumber @bind-Value="employee.Bonuses"></InputNumber>
+            <InputNumber @bind-Value="employee.Retentions"></InputNumber>
+        }
+
+        <button class="btn btn-primary" type="submit">Salvare</button>
+    </EditForm>
+}
+
+@inject ApplicationDbContext _appDbContext
+
+@code {
+    private List<Employee> Employees { get; set; } = new();
+
+    private async Task Save()
+    {
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Employees = await _appDbContext.Employees.ToListAsync();
+    }
+
+}
