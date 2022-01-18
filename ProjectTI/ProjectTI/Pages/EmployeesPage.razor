@@ -22,6 +22,12 @@
                 <th>Spor</th>
                 <th>Premii brute</th>
                 <th>Rețineri</th>
+                <th>Total brut</th>
+                <th>CAS</th>
+                <th>CASS</th>
+                <th>Brut impozabil</th>
+                <th>Impozit</th>
+                <th>Virat card</th>
             </tr>
             </thead>
             <tbody>
@@ -49,6 +55,19 @@
                     <td>
                         <InputNumber @bind-Value="employee.Retentions"></InputNumber>
                     </td>
+                    @{
+                        var cas = employee.TotalSalary * Variables.Cas / 100;
+                        var cass = employee.TotalSalary * Variables.Cass / 100;
+                        var taxableSalary = employee.TotalSalary - cas - cass;
+                        var tax = taxableSalary * Variables.Tax / 100;
+                        var left = taxableSalary - tax - employee.Retentions;
+                    }
+                    <td>@employee.TotalSalary</td>
+                    <td>@cas</td>
+                    <td>@cass</td>
+                    <td>@taxableSalary</td>
+                    <td>@tax</td>
+                    <td>@left</td>
                 </tr>
             }
             </tbody>
@@ -62,6 +81,7 @@
 
 @code {
     private List<Employee> Employees { get; set; } = new();
+    private Variables Variables { get; set; }
 
     private async Task Save()
     {
@@ -73,5 +93,7 @@
     protected override async Task OnInitializedAsync()
     {
         Employees = await _appDbContext.Employees.ToListAsync();
+        Variables = await _appDbContext.Variables.FirstAsync();
     }
+
 }

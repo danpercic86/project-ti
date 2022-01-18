@@ -93,6 +93,13 @@
 
     private async Task Delete(Employee employee)
     {
+        var confirmed = await _jsRuntime.InvokeAsync<bool>("confirm", $"Ești sigur că vrei să ștergi angajatul {employee.FirstName} {employee.LastName}?");
+
+        if (!confirmed)
+        {
+            return;
+        }
+
         _appDbContext.Employees.Remove(employee);
         await _appDbContext.SaveChangesAsync();
         await _jsRuntime.InvokeVoidAsync("alert", "Angajatul a fost șters");
