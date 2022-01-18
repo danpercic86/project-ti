@@ -2,9 +2,9 @@
 @using ProjectTI.Data
 @using Microsoft.EntityFrameworkCore
 
-<PageTitle>Modificare procente</PageTitle>
+<PageTitle>Actualizare date</PageTitle>
 
-<h1>Modificare procente</h1>
+<h1>Actualizare date</h1>
 
 @if (Employees.Count != 0)
 {
@@ -12,33 +12,66 @@
         <DataAnnotationsValidator></DataAnnotationsValidator>
         <ValidationSummary></ValidationSummary>
 
-        @foreach (var employee in Employees)
-        {
-            <InputText @bind-Value="employee.FirstName"></InputText>
-            <InputText @bind-Value="employee.LastName"></InputText>
-            <InputText @bind-Value="employee.Position"></InputText>
-            <InputNumber @bind-Value="employee.Salary"></InputNumber>
-            <InputNumber @bind-Value="employee.Boost"></InputNumber>
-            <InputNumber @bind-Value="employee.Bonuses"></InputNumber>
-            <InputNumber @bind-Value="employee.Retentions"></InputNumber>
-        }
-
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nume</th>
+                <th>Prenume</th>
+                <th>Funcție</th>
+                <th>Salar baza</th>
+                <th>Spor</th>
+                <th>Premii brute</th>
+                <th>Rețineri</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var employee in Employees)
+            {
+                <tr>
+                    <td>
+                        <InputText @bind-Value="employee.LastName"></InputText>
+                    </td>
+                    <td>
+                        <InputText @bind-Value="employee.FirstName"></InputText>
+                    </td>
+                    <td>
+                        <InputText @bind-Value="employee.Position"></InputText>
+                    </td>
+                    <td>
+                        <InputNumber @bind-Value="employee.Salary"></InputNumber>
+                    </td>
+                    <td>
+                        <InputNumber @bind-Value="employee.Boost"></InputNumber>
+                    </td>
+                    <td>
+                        <InputNumber @bind-Value="employee.Bonuses"></InputNumber>
+                    </td>
+                    <td>
+                        <InputNumber @bind-Value="employee.Retentions"></InputNumber>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
         <button class="btn btn-primary" type="submit">Salvare</button>
     </EditForm>
 }
 
 @inject ApplicationDbContext _appDbContext
+@inject IJSRuntime _jsRuntime
 
 @code {
     private List<Employee> Employees { get; set; } = new();
 
     private async Task Save()
     {
+        _appDbContext.Employees.UpdateRange(Employees);
+        await _appDbContext.SaveChangesAsync();
+        await _jsRuntime.InvokeVoidAsync("alert", "Informațiile au fost salvate!");
     }
 
     protected override async Task OnInitializedAsync()
     {
         Employees = await _appDbContext.Employees.ToListAsync();
     }
-
 }
