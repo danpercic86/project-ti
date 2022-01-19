@@ -4,87 +4,79 @@
 
 @attribute [Authorize]
 
-<PageTitle>Actualizare date</PageTitle>
+<PageTitle>Modificare informații angajați</PageTitle>
 
 <h1>Actualizare date</h1>
 
-@* <AuthorizeView> *@
-    @* <Authorized> *@
-        @if (Employees.Count != 0)
-        {
-            <EditForm Model="Employees" OnValidSubmit="@Save">
-                @* <DataAnnotationsValidator></DataAnnotationsValidator> *@
-                @* <ValidationSummary></ValidationSummary> *@
+@if (Employees.Count != 0)
+{
+    <EditForm Model="Employees" OnValidSubmit="@Save">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
 
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Nume</th>
-                        <th>Prenume</th>
-                        <th>Funcție</th>
-                        <th>Salar baza</th>
-                        <th>Spor</th>
-                        <th>Premii brute</th>
-                        <th>Rețineri</th>
-                        <th>Total brut</th>
-                        <th>CAS</th>
-                        <th>CASS</th>
-                        <th>Brut impozabil</th>
-                        <th>Impozit</th>
-                        <th>Virat card</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach (var employee in Employees)
-                    {
-                        <tr>
-                            <td>
-                                <InputText @bind-Value="employee.LastName"></InputText>
-                            </td>
-                            <td>
-                                <InputText @bind-Value="employee.FirstName"></InputText>
-                            </td>
-                            <td>
-                                <InputText @bind-Value="employee.Position"></InputText>
-                            </td>
-                            <td>
-                                <InputNumber @bind-Value="employee.Salary"></InputNumber>
-                            </td>
-                            <td>
-                                <InputNumber @bind-Value="employee.Boost"></InputNumber>
-                            </td>
-                            <td>
-                                <InputNumber @bind-Value="employee.Bonuses"></InputNumber>
-                            </td>
-                            <td>
-                                <InputNumber @bind-Value="employee.Retentions"></InputNumber>
-                            </td>
-                            @{
-                                var cas = employee.TotalSalary * Variables.Cas / 100;
-                                var cass = employee.TotalSalary * Variables.Cass / 100;
-                                var taxableSalary = employee.TotalSalary - cas - cass;
-                                var tax = taxableSalary * Variables.Tax / 100;
-                                var left = taxableSalary - tax - employee.Retentions;
-                            }
-                            <td>@employee.TotalSalary</td>
-                            <td>@cas</td>
-                            <td>@cass</td>
-                            <td>@taxableSalary</td>
-                            <td>@tax</td>
-                            <td>@left</td>
-                        </tr>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nume</th>
+                <th>Prenume</th>
+                <th>Funcție</th>
+                <th>Salar baza</th>
+                <th>Spor</th>
+                <th>Premii brute</th>
+                <th>Rețineri</th>
+                <th>Total brut</th>
+                <th>CAS</th>
+                <th>CASS</th>
+                <th>Brut impozabil</th>
+                <th>Impozit</th>
+                <th>Virat card</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var employee in Employees)
+            {
+                <tr>
+                    <td>
+                        <InputText @bind-Value="employee.LastName"></InputText>
+                    </td>
+                    <td>
+                        <InputText @bind-Value="employee.FirstName"></InputText>
+                    </td>
+                    <td>
+                        <InputText @bind-Value="employee.Position"></InputText>
+                    </td>
+                    <td>
+                        <InputNumber @bind-Value="employee.Salary"></InputNumber>
+                    </td>
+                    <td>
+                        <InputNumber @bind-Value="employee.Boost"></InputNumber>
+                    </td>
+                    <td>
+                        <InputNumber @bind-Value="employee.Bonuses"></InputNumber>
+                    </td>
+                    <td>
+                        <InputNumber @bind-Value="employee.Retentions"></InputNumber>
+                    </td>
+                    @{
+                        var cas = employee.TotalSalary * Variables.Cas / 100;
+                        var cass = employee.TotalSalary * Variables.Cass / 100;
+                        var taxableSalary = employee.TotalSalary - cas - cass;
+                        var tax = taxableSalary * Variables.Tax / 100;
+                        var left = taxableSalary - tax - employee.Retentions;
                     }
-                    </tbody>
-                </table>
-                <button class="btn btn-primary" type="submit">Salvare</button>
-            </EditForm>
-        }
-@*     </Authorized> *@
-@* *@
-@*     <NotAuthorized> *@
-@*         <p>Trebuie să fii autorizat pentru a putea vedea lista cu angajații!</p> *@
-@*     </NotAuthorized> *@
-@* </AuthorizeView> *@
+                    <td>@employee.TotalSalary</td>
+                    <td>@cas</td>
+                    <td>@cass</td>
+                    <td>@taxableSalary</td>
+                    <td>@tax</td>
+                    <td>@left</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <button class="btn btn-primary" type="submit">Salvare</button>
+    </EditForm>
+}
 
 @inject ApplicationDbContext _appDbContext
 @inject IJSRuntime _jsRuntime

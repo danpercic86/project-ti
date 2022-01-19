@@ -3,18 +3,50 @@
 <PageTitle>ProjectTI</PageTitle>
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
-
     <main>
-        <div class="top-row px-4 auth">
-            <LoginDisplay/>
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        <div class="top-row px-4 justify-content-between">
+            <a class="navbar-brand" href="">Proiect .NET 6 - aplicație salarizare</a>
+
+            @_time
+
+            <div class="d-flex auth align-items-center">
+                <LoginDisplay/>
+            </div>
         </div>
 
         <article class="content px-4">
             @Body
         </article>
+
+        <div class="d-flex justify-content-around mt-5 pt-5">
+            <div class="nav-item pt-5">
+                <img height="200" src="https://loveincorporated.blob.core.windows.net/contentimages/gallery/145a7eb7-9c43-4d8e-bd11-a303162ed7ba-beautiful_cities_bruges.jpg">
+            </div>
+
+            <div class="nav-item pt-5">
+                <img height="200" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuSzHtnUTNRUgl3qhm3I5enqZKWtxpfc1KTeIpnfzmrqfx35MWB_9-Co9-Rytn_SThfBg&usqp=CAU">
+            </div>
+        </div>
     </main>
+
+    <div class="sidebar">
+        <NavMenu/>
+    </div>
 </div>
+
+@code
+{
+    DateTime _time = DateTime.Now;
+    Timer? _timer;
+
+    protected override void OnInitialized()
+    {
+        _timer = new Timer(Tick, null, 0, 1000);
+    }
+
+    private void Tick(object _)
+    {
+        _time = DateTime.Now;
+        InvokeAsync(StateHasChanged);
+    }
+}

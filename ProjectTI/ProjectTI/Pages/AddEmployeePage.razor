@@ -6,35 +6,37 @@
 
 <PageTitle>Adăugare angajat</PageTitle>
 
-<h1>Adăugare angajat</h1>
+<div class="d-flex flex-column align-items-center">
+    <h1>Insereaza datele noului angajat</h1>
 
-<EditForm class="d-flex flex-column w-25" Model="Employee" OnValidSubmit="@Save">
-    <DataAnnotationsValidator></DataAnnotationsValidator>
-    <ValidationSummary></ValidationSummary>
+    <EditForm class="d-flex flex-column w-25" Model="Employee" OnValidSubmit="@Save">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
 
-    <label>Nume:</label>
-    <InputText class="py-1 my-2" @bind-Value="Employee.LastName"></InputText>
+        <label>Nume:</label>
+        <InputText class="py-1 my-2" @bind-Value="Employee.LastName"></InputText>
 
-    <label>Prenume: </label>
-    <InputText class="py-1 my-2" @bind-Value="Employee.FirstName"></InputText>
+        <label>Prenume: </label>
+        <InputText class="py-1 my-2" @bind-Value="Employee.FirstName"></InputText>
 
-    <label>Functie: </label>
-    <InputText class="py-1 my-2" @bind-Value="Employee.Position"></InputText>
+        <label>Functie: </label>
+        <InputText class="py-1 my-2" @bind-Value="Employee.Position"></InputText>
 
-    <label>Salar baza: </label>
-    <InputNumber class="py-1 my-2" @bind-Value="Employee.Salary"></InputNumber>
+        <label>Salar baza: </label>
+        <InputNumber class="py-1 my-2" @bind-Value="Employee.Salary"></InputNumber>
 
-    <label>Spor: </label>
-    <InputNumber class="py-1 my-2" @bind-Value="Employee.Boost"></InputNumber>
+        <label>Spor: </label>
+        <InputNumber class="py-1 my-2" @bind-Value="Employee.Boost"></InputNumber>
 
-    <label>Premii brute: </label>
-    <InputNumber class="py-1 my-2" @bind-Value="Employee.Bonuses"></InputNumber>
+        <label>Premii brute: </label>
+        <InputNumber class="py-1 my-2" @bind-Value="Employee.Bonuses"></InputNumber>
 
-    <label>Retineri: </label>
-    <InputNumber class="py-1 my-2" @bind-Value="Employee.Retentions"></InputNumber>
+        <label>Retineri: </label>
+        <InputNumber class="py-1 my-2" @bind-Value="Employee.Retentions"></InputNumber>
 
-    <button class="btn btn-primary mt-2" type="submit">Salvare</button>
-</EditForm>
+        <button class="btn btn-primary mt-2" type="submit">Salvare</button>
+    </EditForm>
+</div>
 
 @inject ApplicationDbContext _appDbContext
 @inject IJSRuntime _jsRuntime
